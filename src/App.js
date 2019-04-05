@@ -40,10 +40,9 @@ class App extends Component {
     console.log('Clicked pic id is :',this.state.id);
 
     // Check to see if clicked picture "id" is in "clickedPics" array
-    console.log('clickedPics', this.state.clickedPics);
     if (this.state.clickedPics.includes(this.state.id)) {
 
-      this.setState({message: "Sorry, Gamve Over !"});
+      this.setState({message: "Sorry, Game Over !"});
 
       //End of game stuff here as picture has already been clicked
 
@@ -60,10 +59,10 @@ class App extends Component {
 
     } else {
 
-     //If not, then continue game
+     //If not end of game, then continue game
 
      // Message
-     this.setState({message: "Keep on clicking !"});
+     this.setState({message: "Keep on clicking ..."});
 
      // Add clicked picture id to clickedPics array
       this.setState({clickedPics: this.state.clickedPics.concat([this.state.id])});
@@ -83,32 +82,36 @@ class App extends Component {
   // Render function
   render() {
     return (
+
       <Wrapper>
 
         <Header>
 
           Clicky Game <br></br>
           Don't click an image more than once though !
-          <p message={this.state.message}></p>
+
+          <p>{this.state.message}</p>
 
         </Header>
 
-        <p message={this.state.message}></p>
-
         {this.state.pics.map(Pic => (
+
         <Picture 
           id={Pic.id}
           key={Pic.id}
           image={Pic.image}
           click={this.pictureClick}
         />
+
         ))}
+
         <Footer>
+
           {this.state.gameScore}
           {this.state.topScore}
+
         </Footer>
 
-      
       </Wrapper>
     );
   };
