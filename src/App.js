@@ -11,7 +11,7 @@ class App extends Component {
   state = {
     clickedPics: [],
     pics: pics,
-    id: 0,
+    clickid: 0,
     gameScore: 0,
     topScore: 0,
     message: ''
@@ -28,23 +28,20 @@ class App extends Component {
     }
     return array;
   };
-  
 
   // Happens when a picture is clicked
   pictureClick = event => {
 
-    let {id}  = event.target;
+    let {id} = event.target;
+    id = parseInt(id);
+    console.log("id from event: ",id);
 
-    // Setting id state for the id of the pic that was clicked
-    this.setState({id:id});
-    console.log('Clicked pic id is :',this.state.id);
-
-    // Check to see if clicked picture "id" is in "clickedPics" array
-    if (this.state.clickedPics.includes(this.state.id)) {
-
-      this.setState({message: "Sorry, Game Over !"});
+    if (this.state.clickedPics.includes(id)) {
 
       //End of game stuff here as picture has already been clicked
+
+      //Set end of game message
+      this.setState({message: "Sorry, Game Over !"});
 
       // Update topScore if needed
       if (this.state.topScore < this.state.gameScore){
@@ -56,6 +53,7 @@ class App extends Component {
 
       // Clear out clickedPics array
       this.setState({clickedPics: []});
+ 
 
     } else {
 
@@ -65,7 +63,7 @@ class App extends Component {
      this.setState({message: "Keep on clicking ..."});
 
      // Add clicked picture id to clickedPics array
-      this.setState({clickedPics: this.state.clickedPics.concat([this.state.id])});
+      this.setState({clickedPics:[...this.state.clickedPics,id]});
       console.log("Clicked pics array: ",this.state.clickedPics);
 
       // Increase game score by one
@@ -74,10 +72,11 @@ class App extends Component {
       // Shuffle the pictures
       let picOrder = this.shuffleArray(this.state.pics);
       this.setState({pics: picOrder});
-
+ 
+      id = '';
       }  
     };
-    
+   
 
   // Render function
   render() {
@@ -96,14 +95,15 @@ class App extends Component {
 
         {this.state.pics.map(Pic => (
 
-        <Picture 
-          id={Pic.id}
-          key={Pic.id}
-          image={Pic.image}
-          click={this.pictureClick}
-        />
+          <Picture 
+            
+            id={Pic.id}
+            key={Pic.id}
+            image={Pic.image}
+            onClick={this.pictureClick.bind(this)}
+          />
 
-        ))}
+          ))}
 
         <Footer>
 
